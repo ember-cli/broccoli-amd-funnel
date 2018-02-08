@@ -3,6 +3,7 @@
 const helper = require('broccoli-test-helper');
 const co = require('co');
 const expect = require('chai').expect;
+const sinon = require('sinon');
 const AmdFunnel = require('..');
 const setSymlinkOrCopyOptions = require('symlink-or-copy').setOptions;
 const createBuilder = helper.createBuilder;
@@ -10,6 +11,7 @@ const createTempDir = helper.createTempDir;
 
 describe('AmdFunnel', function() {
   let input, output;
+  let callback;
 
   [true, false, undefined].forEach(canSymlink => {
     describe(`canSymlink: ${canSymlink}`, function() {
@@ -22,8 +24,11 @@ describe('AmdFunnel', function() {
           canSymlink
         });
 
+        callback = sinon.spy();
+
         let subject = new AmdFunnel(input.path(), {
-          canSymlink
+          canSymlink,
+          callback
         });
 
         output = createBuilder(subject);
@@ -82,6 +87,17 @@ describe('AmdFunnel', function() {
         expect(output.read()).to.deep.equal({
           'amd.js': `exports { * } from './amd';`
         });
+      }));
+
+      it('should call a callback if an AMD file is found', co.wrap(function * () {
+        input.write({
+          'amd.js': `define('amd', function() {});`,
+          'es6.js': `exports { * } from './es6';`
+        });
+
+        yield output.build();
+
+        expect(callback.args).to.deep.equal([[['amd.js']]]);
       }));
     });
   });

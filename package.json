@@ -1,0 +1,19 @@
+{
+  "name": "broccoli-amd-funnel",
+  "version": "0.0.0",
+  "description": "Funnel based on whether a module is AMD or not",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ember-cli/broccoli-amd-funnel.git"
+  },
+  "author": "Kelly Selden",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ember-cli/broccoli-amd-funnel/issues"
+  },
+  "homepage": "https://github.com/ember-cli/broccoli-amd-funnel#readme"
+}

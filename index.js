@@ -17,6 +17,8 @@ class AmdFunnel extends Funnel {
       exclude: [],
       annotation: options.annotation
     });
+
+    this._options = options || {};
   }
 
   build() {
@@ -42,6 +44,10 @@ class AmdFunnel extends Funnel {
         });
       });
     })).then(() => {
+      if (this.exclude.length && this._options.callback) {
+        this._options.callback(this.exclude);
+      }
+
       super.build();
     });
   }

@@ -13,6 +13,7 @@ module.exports = {
     node: true
   },
   rules: {
-    'mocha/no-exclusive-tests': 'error'
+    'mocha/no-exclusive-tests': 'error',
+    'mocha/no-identical-title': 'error'
   }
 };

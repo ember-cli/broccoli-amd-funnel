@@ -35,13 +35,13 @@ describe('AmdFunnel', function() {
   it('should remove the AMD modules', co.wrap(function * () {
     input.write({
       'amd.js': `define('amd', function() {});`,
-      'es6.js': `exports { * } from './es6';`
+      'es6.js': `export { es6 } from './es6';`
     });
 
     yield output.build();
 
     expect(output.read()).to.deep.equal({
-      'es6.js': `exports { * } from './es6';`
+      'es6.js': `export { es6 } from './es6';`
     });
 
     yield output.build();
@@ -52,20 +52,20 @@ describe('AmdFunnel', function() {
   it('should have updated the contents of the addon file if the addon updates its contents', co.wrap(function * () {
     input.write({
       'amd.js': `define('amd', function() {});`,
-      'es6.js': `exports { * } from './es6';`
+      'es6.js': `export { es6 } from './es6';`
     });
 
     yield output.build();
 
     input.write({
-      'amd.js': `exports { * } from './amd';`
+      'amd.js': `export { amd } from './amd';`
     });
 
     yield output.build();
 
     expect(output.read()).to.deep.equal({
-      'amd.js': `exports { * } from './amd';`,
-      'es6.js': `exports { * } from './es6';`
+      'amd.js': `export { amd } from './amd';`,
+      'es6.js': `export { es6 } from './es6';`
     });
 
     input.write({
@@ -75,14 +75,14 @@ describe('AmdFunnel', function() {
     yield output.build();
 
     expect(output.read()).to.deep.equal({
-      'amd.js': `exports { * } from './amd';`
+      'amd.js': `export { amd } from './amd';`
     });
   }));
 
   it('should call a callback if an AMD file is found', co.wrap(function * () {
     input.write({
       'amd.js': `define('amd', function() {});`,
-      'es6.js': `exports { * } from './es6';`
+      'es6.js': `export { es6 } from './es6';`
     });
 
     yield output.build();

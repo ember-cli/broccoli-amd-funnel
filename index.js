@@ -13,12 +13,14 @@ const walkSync = require('walk-sync');
 // about babel output, which is pretty consistent.
 class AmdFunnel extends Funnel {
   constructor(inputNode, options) {
+    options = options || {};
+
     super(inputNode, {
       exclude: [],
       annotation: options.annotation
     });
 
-    this._options = options || {};
+    this._options = options;
   }
 
   build() {

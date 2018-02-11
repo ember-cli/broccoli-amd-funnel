@@ -88,5 +88,11 @@ describe('AmdFunnel', function() {
     yield output.build();
 
     expect(callback.args).to.deep.equal([[['amd.js']]]);
+
+    callback.resetHistory();
+
+    yield output.build();
+
+    expect(callback.args).to.deep.equal([[['amd.js']]]);
   }));
 });

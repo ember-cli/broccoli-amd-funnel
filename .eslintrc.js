@@ -5,9 +5,13 @@ module.exports = {
     sourceType: 'module'
   },
   plugins: [
-    'mocha'
+    'mocha',
+    'node'
   ],
-  extends: 'sane',
+  extends: [
+    'sane',
+    'plugin:node/recommended'
+  ],
   env: {
     es6: true,
     node: true

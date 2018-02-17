@@ -26,10 +26,7 @@ describe('AmdFunnel', function() {
 
   afterEach(co.wrap(function * () {
     yield input.dispose();
-
-    if (output) {
-      yield output.dispose();
-    }
+    yield output.dispose();
   }));
 
   it('should remove the AMD modules', co.wrap(function * () {

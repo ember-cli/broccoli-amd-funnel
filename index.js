@@ -2,8 +2,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const Funnel = require('broccoli-funnel');
-const walkSync = require('walk-sync');
+const Plugin = require('broccoli-plugin');
+const symlinkOrCopy = require('symlink-or-copy');
 
 // Some addons do their own compilation, which means the addon trees will
 // be a mix of ES6 and AMD files. This plugin gives us a way to separate the
@@ -11,12 +11,12 @@ const walkSync = require('walk-sync');
 
 // It has a very simple method of detecting AMD code, because we only care
 // about babel output, which is pretty consistent.
-class AmdFunnel extends Funnel {
+class AmdFunnel extends Plugin {
   constructor(inputNode, options) {
     options = options || {};
 
-    super(inputNode, {
-      exclude: [],
+    super([inputNode], {
+      persistentOutput: true,
       annotation: options.annotation
     });
 
@@ -24,34 +24,51 @@ class AmdFunnel extends Funnel {
   }
 
   build() {
+    if (this._hasRan && symlinkOrCopy.canSymlink) {
+      return;
+    }
+
     let inputPath = this.inputPaths[0];
-    this.exclude = [];
+    let outputPath = this.outputPath;
 
-    let files = walkSync(inputPath, {
-      directories: false,
-      globs: ['**/*.js']
-    });
+    let isAmd;
 
-    return Promise.all(files.map(file => {
-      let inputFilePath = path.join(inputPath, file);
-      return new Promise((resolve, reject) => {
-        fs.readFile(inputFilePath, 'utf8', (err, source) => {
-          if (err) {
-            return reject(err);
-          }
-          if (source.indexOf('define(') === 0) {
-            this.exclude.push(file);
-          }
-          resolve();
-        });
-      });
-    })).then(() => {
-      if (this.exclude.length && this._options.callback) {
-        this._options.callback(this.exclude);
+    (function walk(dir) {
+      let dirs = [];
+      for (let file of fs.readdirSync(dir)) {
+        if (!file.endsWith('.js')) {
+          continue;
+        }
+        let filePath = path.join(dir, file);
+        let stats = fs.statSync(filePath);
+        if (stats.isDirectory()) {
+          dirs.push(filePath);
+        } else {
+          let source = fs.readFileSync(filePath);
+          isAmd = source.indexOf('define(') === 0;
+          return true;
+        }
+      }
+      for (let dir of dirs) {
+        if (walk(dir)) {
+          return true;
+        }
+      }
+    })(inputPath);
+
+    if (!isAmd) {
+      if (this._hasRan) {
+        fs.unlinkSync(outputPath);
+      } else {
+        fs.rmdirSync(outputPath);
       }
 
-      super.build();
-    });
+      symlinkOrCopy.sync(inputPath, outputPath);
+    } else if (this._options.callback) {
+      this._options.callback();
+    }
+
+    this._hasRan = true;
   }
 }
 

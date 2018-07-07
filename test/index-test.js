@@ -105,12 +105,9 @@ describe('AmdFunnel', function() {
           'es6.js': `export { foo } from './es6';`
         });
 
-        // even though I think everything is working correctly,
-        // this assertion behaves very inconsistently
-        // accross Windows/Unix and local/CI
-        // expect(output.changes()).to.deep.equal({
-        //   'es6.js': 'change'
-        // });
+        expect(output.changes()).to.deep.equal({
+          'es6.js': 'change'
+        });
       }));
 
       it('should call a callback if an AMD file is found', co.wrap(function * () {

@@ -1,22 +1,18 @@
 'use strict';
 
-const helper = require('broccoli-test-helper');
+const { createBuilder, createTempDir } = require('broccoli-test-helper');
 const co = require('co');
-const expect = require('chai').expect;
+const { expect } = require('chai');
 const sinon = require('sinon');
 const symlinkOrCopy = require('symlink-or-copy');
 const AmdFunnel = require('..');
-const createBuilder = helper.createBuilder;
-const createTempDir = helper.createTempDir;
 
 describe('AmdFunnel', function() {
   let input, output;
   let callback;
 
   [true, false, undefined].forEach(canSymlink => {
-
     describe(`- canSymlink: ${canSymlink} -`, function() {
-
       beforeEach(co.wrap(function * () {
         input = yield createTempDir();
 

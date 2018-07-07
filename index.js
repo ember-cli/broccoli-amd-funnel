@@ -12,9 +12,7 @@ const symlinkOrCopy = require('symlink-or-copy');
 // It has a very simple method of detecting AMD code, because we only care
 // about babel output, which is pretty consistent.
 class AmdFunnel extends Plugin {
-  constructor(inputNode, options) {
-    options = options || {};
-
+  constructor(inputNode, options = {}) {
     super([inputNode], {
       persistentOutput: true,
       annotation: options.annotation
@@ -28,7 +26,7 @@ class AmdFunnel extends Plugin {
       return;
     }
 
-    let inputPath = this.inputPaths[0];
+    let [inputPath] = this.inputPaths;
     let outputPath = this.outputPath;
 
     let isAmd;

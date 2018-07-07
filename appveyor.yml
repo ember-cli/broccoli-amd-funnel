@@ -1,6 +1,6 @@
 environment:
   matrix:
-    - nodejs_version: "4"
+    - nodejs_version: "6"
 
 # Fix line endings in Windows. (runs before repo cloning)
 init:
@@ -11,7 +11,7 @@ install:
   - ps: Install-Product node $env:nodejs_version
   - node --version
   - npm config set spin false
-  - npm install -g npm@5
+  - npm install -g npm
   - npm --version
   - npm install
 

@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/ember-cli/broccoli-amd-funnel#readme",
   "engines": {
-    "node": ">=4"
+    "node": ">=6"
   },
   "files": [],
   "dependencies": {

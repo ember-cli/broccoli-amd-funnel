@@ -12,7 +12,7 @@ install:
   - npm config set spin false
   - npm install -g npm
   - npm --version
-  - npm install
+  - npm ci
 
 # Post-install test scripts.
 test_script:

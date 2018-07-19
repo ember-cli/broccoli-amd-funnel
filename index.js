@@ -30,23 +30,28 @@ class AmdFunnel extends Plugin {
     let outputPath = this.outputPath;
 
     let isAmd;
+    let isScoped;
 
     (function walk(dir) {
       let dirs = [];
       for (let file of fs.readdirSync(dir)) {
-        if (!file.endsWith('.js')) {
-          continue;
-        }
         let filePath = path.join(dir, file);
         let stats = fs.statSync(filePath);
         if (stats.isDirectory()) {
           dirs.push(filePath);
         } else {
+          if (!file.endsWith('.js')) {
+            continue;
+          }
           let source = fs.readFileSync(filePath);
           isAmd = source.indexOf('define(') === 0;
           return true;
         }
       }
+      if (isScoped) {
+        return true;
+      }
+      isScoped = true;
       for (let dir of dirs) {
         if (walk(dir)) {
           return true;

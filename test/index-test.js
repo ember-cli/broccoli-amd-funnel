@@ -66,6 +66,28 @@ describe('AmdFunnel', function() {
         expect(output.changes()).to.deep.equal({});
       }));
 
+      it('stops searching on the first found file', co.wrap(function * () {
+        input.write({
+          'scope': {
+            'amd.js': `define('amd', function() {});`
+          },
+          'es6.js': `export { es6 } from './es6';`
+        });
+
+        yield output.build();
+
+        expect(output.read()).to.deep.equal({
+          'scope': {
+            'amd.js': `define('amd', function() {});`
+          },
+          'es6.js': `export { es6 } from './es6';`
+        });
+
+        yield output.build();
+
+        expect(output.changes()).to.deep.equal({});
+      }));
+
       it('should have updated the contents of the AMD file if the addon updates its contents', co.wrap(function * () {
         input.write({
           'amd.js': `define('amd', function() {});`

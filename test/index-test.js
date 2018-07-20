@@ -66,6 +66,46 @@ describe('AmdFunnel', function() {
         expect(output.changes()).to.deep.equal({});
       }));
 
+      it('handles scoped addons with AMD', co.wrap(function * () {
+        input.write({
+          'scope': {
+            'amd.js': `define('amd', function() {});`
+          }
+        });
+
+        yield output.build();
+
+        expect(output.read()).to.deep.equal({});
+
+        yield output.build();
+
+        expect(output.changes()).to.deep.equal({});
+      }));
+
+      it('only searches one nested dir (scopes only)', co.wrap(function * () {
+        input.write({
+          'scope': {
+            'lib': {
+              'amd.js': `define('amd', function() {});`
+            }
+          }
+        });
+
+        yield output.build();
+
+        expect(output.read()).to.deep.equal({
+          'scope': {
+            'lib': {
+              'amd.js': `define('amd', function() {});`
+            }
+          }
+        });
+
+        yield output.build();
+
+        expect(output.changes()).to.deep.equal({});
+      }));
+
       it('stops searching on the first found file', co.wrap(function * () {
         input.write({
           'scope': {

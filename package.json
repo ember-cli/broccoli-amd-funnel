@@ -1,6 +1,6 @@
 {
   "name": "broccoli-amd-funnel",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Funnel based on whether a module is AMD or not",
   "main": "index.js",
   "scripts": {

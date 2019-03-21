@@ -37,6 +37,6 @@
     "eslint-plugin-node": "^8.0.0",
     "eslint-plugin-prefer-let": "^1.0.1",
     "mocha": "^6.0.2",
-    "sinon": "^7.2.7"
+    "sinon": "^7.3.0"
   }
 }

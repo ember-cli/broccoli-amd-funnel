@@ -33,7 +33,7 @@
     "co": "^4.6.0",
     "eslint": "^5.16.0",
     "eslint-config-sane": "^0.6.0",
-    "eslint-plugin-mocha": "^6.0.0",
+    "eslint-plugin-mocha": "^6.1.0",
     "eslint-plugin-node": "^8.0.0",
     "eslint-plugin-prefer-let": "^1.0.1",
     "mocha": "^6.2.0",

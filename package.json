@@ -32,7 +32,7 @@
     "chai": "^4.1.2",
     "co": "^4.6.0",
     "eslint": "^5.16.0",
-    "eslint-config-sane": "^0.6.0",
+    "eslint-config-sane": "^1.0.0",
     "eslint-plugin-mocha": "^6.3.0",
     "eslint-plugin-node": "^8.0.0",
     "eslint-plugin-prefer-let": "^1.1.0",

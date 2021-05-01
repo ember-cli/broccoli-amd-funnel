@@ -24,7 +24,7 @@
   },
   "files": [],
   "dependencies": {
-    "broccoli-plugin": "^2.1.0",
+    "broccoli-plugin": "^4.0.5",
     "symlink-or-copy": "^1.2.0"
   },
   "devDependencies": {
